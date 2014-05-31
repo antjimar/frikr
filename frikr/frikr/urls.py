@@ -4,6 +4,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 from photos import views
+from photos import api
 
 urlpatterns = patterns('',
     # Examples:
@@ -17,5 +18,9 @@ urlpatterns = patterns('',
     url(r'^login$', views.LoginView.as_view()),
     url(r'^logout$', 'photos.views.user_logout'),
     url(r'^profile$', views.UserProfileView.as_view()),
-    url(r'^create$', 'photos.views.new_photo')
+    url(r'^create$', 'photos.views.new_photo'),
+
+
+    # API URLs
+    url(r'^api/1.0/users/$', api.UserListAPI.as_view())
 )
