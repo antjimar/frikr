@@ -1,6 +1,9 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
+from models import Photo
+
+
 
 class UserSerializer(serializers.Serializer):
 
@@ -30,7 +33,10 @@ class UserSerializer(serializers.Serializer):
 
 
 
+class PhotoSerializer(serializers.ModelSerializer):
 
+    class Meta:
+        model = Photo
 
 
 
