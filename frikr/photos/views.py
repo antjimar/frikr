@@ -3,7 +3,7 @@ from django.shortcuts import render
 from models import Photo
 
 def home(request):
-    all_photos = Photo.objects.all().order_by('-created_at')
+    all_photos = Photo.objects.filter(visibility=Photo.VISIBILITY_PUBLIC).order_by('-created_at')
     context = {
         'photo_list' : all_photos[:10]
     }
