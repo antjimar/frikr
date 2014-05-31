@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<title>Fotos en Frikr</title>
+</head>
+<body>
+	{% include 'photos/menu.html' %}
+	<h1>Fotos en Frikr</h1>
+	{% include 'photos/photo_list.html' with photos=object_list %}
+</body>
+</html>

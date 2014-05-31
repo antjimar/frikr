@@ -3,15 +3,19 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
+from photos import views
+
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'frikr.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', 'photos.views.home'),
-    url(r'^photos/(?P<pk>[0-9]+)$', 'photos.views.photo_detail'),
-    url(r'^login$', 'photos.views.user_login'),
+    url(r'^$', views.HomeView.as_view()),
+    url(r'^photos/$', views.PhotoList.as_view()),
+    url(r'^photos/(?P<pk>[0-9]+)$', views.PhotoDetail.as_view()),
+    url(r'^login$', views.LoginView.as_view()),
     url(r'^logout$', 'photos.views.user_logout'),
-    url(r'^profile$', 'photos.views.user_profile')
+    url(r'^profile$', views.UserProfileView.as_view()),
+    url(r'^create$', 'photos.views.new_photo')
 )

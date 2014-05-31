@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<title>Crear una foto</title>
+</head>
+<body>
+	{% include 'photos/menu.html' %}
+	<h1>Crear una foto</h1>
+
+	{% for message in message_list %}
+		<p>{{ message|safe }}</p>
+	{% endfor %}
+
+	<form method="post">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<button type="submit">Crear foto</button>
+	</form>
+</body>
+</html>
