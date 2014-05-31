@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<title>Frikr de {{ user.first_name }} {{ user.last_name }}</title>
+</head>
+<body>
+	{% include 'photos/menu.html' %}
+	<h1>Frikr de {{ user.first_name }} {{ user.last_name }}</h1>
+	{% if photos|length > 0 %}
+		<h2>Fotos publicadas</h2>
+		{% include 'photos/photo_list.html' %}
+	{% endif %}
+</body>
+</html>

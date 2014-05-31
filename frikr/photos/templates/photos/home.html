@@ -11,11 +11,7 @@
 
 {% if photo_list|length > 0 %}
 	<h2>Últimas fotos publicadas</h2>
-	{% for photo in photo_list %}
-		<a href="/photos/{{ photo.pk }}">
-			<img src="{{ photo.url }}" alt="{{ photo.name }}" height="140">
-		</a>
-	{% endfor %}
+	{% include 'photos/photo_list.html' with photos=photo_list %}
 {% endif %}
 
 </body>
