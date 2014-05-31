@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-	<meta charset="UTF-8">
-	<title>Frikr - Login</title>
-</head>
-<body>
-	{% include 'photos/menu.html' %}
+{% extends 'photos/base.html' %}
+
+{% block head_title %} Frikr login! {% endblock %}
+
+{% block body_content %}
+
 	<h1>Entra en Frikr!</h1>
 
 	{% if errors|length > 0 %}
@@ -21,5 +19,5 @@
 		{{ form.as_p }}
 		<p><button type="submit">Entrar</button></p>
 	</form>
-</body>
-</html>
+
+{% endblock %}
