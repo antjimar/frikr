@@ -9,5 +9,6 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', 'photos.views.home')
+    url(r'^$', 'photos.views.home'),
+    url(r'^photos/(?P<pk>[0-9]+)$', 'photos.views.photo_detail')
 )
