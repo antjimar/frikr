@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from rest_framework.views import APIView
 from django.contrib.auth.models import User
 from serializers import UserSerializer, PhotoSerializer
@@ -5,6 +6,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from models import Photo
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
 
 
@@ -66,14 +68,20 @@ class UserDetailAPI(APIView):
 
 
 
-class PhotoListAPI(APIView):
+class PhotoListAPI(ListCreateAPIView):
+    """
+    API con endpoints de listado y creación de fotos
+    """
+    queryset = Photo.objects.all()
+    serializer_class = PhotoSerializer
 
-    def get(self, request):
-        photos = Photo.objects.all()
-        serializer = PhotoSerializer(photos, many=True)
-        return Response(serializer.data)
 
-
+class PhotoDetailAPI(RetrieveUpdateDestroyAPIView):
+    """
+    API con endpoints de detalle, actualización y borrado
+    """
+    queryset = Photo.objects.all()
+    serializer_class = PhotoSerializer
 
 
 
