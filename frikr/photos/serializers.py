@@ -52,23 +52,7 @@ class PhotoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Photo
-
-
-    # from http://goo.gl/G2nCu7
-    BADWORDS = (u'diseñata', u'limpiatubos', u'abollao', u'abrazafarolas')
-
-    def validate_description(self, attrs, source):
-        """
-        Valida que la descripción no tiene tacos
-        :param attrs: diccionario con todos los atributos
-        :param source: nombre del atributo a validar
-        :return: diccionario con atributos
-        """
-        description = attrs.get(source)
-        for badword in self.BADWORDS:
-            if badword in description:
-                raise serializers.ValidationError(badword + u" no es una palabra permitida")
-        return attrs
+        read_only_fields = ('owner',) # Hace que no sea necesario pasar el campo en el POST
 
 
 class PhotoListSerializer(PhotoSerializer):
