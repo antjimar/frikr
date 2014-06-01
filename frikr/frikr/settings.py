@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for frikr project.
 
@@ -84,3 +85,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_URL = '/login'
+
+# REST Framework settings
+REST_FRAMEWORK = {
+    'PAGINATE_BY' : 3, # indica los elementos a mostrar por página
+    'PAGINATE_BY_PARAM' : 'page_size', # permite definir al cliente el tamaño de paginación
+    'MAX_PAGINATE_BY' : 6, # maxímo número de items por página permitidos
+}
