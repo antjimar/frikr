@@ -9,3 +9,8 @@ LICENSES = getattr(settings, 'LICENSES', (
     (COPYLEFT, 'Copyleft'),
     (CREATIVE_COMMONS, 'Creative Commons')
 ))
+
+"""
+Define el remitente de los e-mails
+"""
+SENDER_EMAIL = getattr(settings, 'SENDER_EMAIL', 'admin@localhost')

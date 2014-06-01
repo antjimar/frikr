@@ -17,13 +17,9 @@ class UserPermission(BasePermission):
         :return: boolean
         """
 
-        from api import UserDetailAPI
-
         if request.method == "POST":
             return True
         elif request.user.is_superuser:
-            return True
-        elif isinstance(view, UserDetailAPI):
             return True
         else:
             return False

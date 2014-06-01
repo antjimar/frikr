@@ -40,3 +40,10 @@ class Photo(models.Model):
         for badword in self.BADWORDS:
             if badword in self.description:
                 raise ValidationError(badword + u" es una palabra no permitida")
+
+
+
+class PhotoFile(models.Model):
+
+    url = models.FileField(upload_to='uploads')
+    created_at = models.DateTimeField(auto_now_add=True)

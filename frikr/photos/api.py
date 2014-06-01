@@ -1,47 +1,53 @@
 # -*- coding: utf-8 -*-
-from rest_framework.views import APIView
 from django.contrib.auth.models import User
-from serializers import UserSerializer, PhotoSerializer, PhotoListSerializer
+from serializers import UserSerializer, PhotoSerializer, PhotoListSerializer, PhotoFileSerializer
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from models import Photo
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, GenericAPIView
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from permissions import UserPermission
+from models import Photo, PhotoFile
+from rest_framework.generics import CreateAPIView, ListCreateAPIView
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from django.db.models import Q
+from rest_framework.viewsets import ModelViewSet, ViewSet
+from rest_framework import filters
+from django.core.mail import send_mail
+from settings import SENDER_EMAIL
+from django.conf import settings
 
 
+class UserViewSet(ViewSet):
 
-class UserListAPI(APIView):
 
-    permission_classes = (UserPermission,)
-
-    def get(self, request):
+    def list(self, request): # GET del listado
         """
         Lista los usuarios del sistema
         """
-        users = User.objects.all()
-        serializer = UserSerializer(users, many=True) # many = True porque pasamos un listado y no un solo modelo
-        return Response(serializer.data)
+        if request.user.is_superuser:
+            users = User.objects.all()
+            serializer = UserSerializer(users, many=True) # many = True porque pasamos un listado y no un solo modelo
+            return Response(serializer.data)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-    def post(self, request):
+
+    def create(self, request): # POST
         """
         Crea un usuario
         """
         serializer = UserSerializer(data=request.DATA) # use DATA instead of POST
         if serializer.is_valid():
             new_user = serializer.save()
+
+            message = u"Tu usuario es: " + new_user.username + u" tú sabrás cual es tu password."
+            send_mail(u"Bienvenido a Frikr!", message, SENDER_EMAIL, [new_user.email], fail_silently=(not settings.DEBUG))
+
             return Response(serializer.data, status=status.HTTP_201_CREATED) # 201 CREATED
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) # 400 BAD REQUEST
 
 
 
-class UserDetailAPI(APIView):
-
-
-    def get(self, request, pk):
+    def retrieve(self, request, pk): # GET del detalle
         """
         Devuelve el detalle de un usuario
         """
@@ -52,7 +58,8 @@ class UserDetailAPI(APIView):
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-    def put(self, request, pk):
+
+    def update(self, request, pk): # PUT
         """
         Actualiza un usuario
         """
@@ -67,7 +74,8 @@ class UserDetailAPI(APIView):
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-    def delete(self, request, pk):
+
+    def destroy(self, request, pk): # DELETE
         """
         Elimina un usuario
         """
@@ -79,7 +87,15 @@ class UserDetailAPI(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
 
-class PhotoAPIQueryset:
+
+class PhotoViewSet(ModelViewSet):
+
+    queryset = Photo.objects.all()
+    serializer_class = PhotoListSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+    filter_backends = (filters.DjangoFilterBackend, filters.OrderingFilter,)
+    filter_fields = ('name', 'license', 'visibility')
+    ordering_fields = ('id', 'name', 'owner')
 
     def get_queryset(self) :
         """
@@ -95,35 +111,20 @@ class PhotoAPIQueryset:
             return Photo.objects.filter(visibility=Photo.VISIBILITY_PUBLIC)
 
 
-
-class PhotoListAPI(PhotoAPIQueryset, ListCreateAPIView):
-    """
-    API con endpoints de listado y creación de fotos
-    """
-    queryset = Photo.objects.all()
-    serializer_class = PhotoListSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+    def get_serializer_class(self) :
+        return PhotoSerializer if self.action == "create" else PhotoListSerializer
 
 
-    def get_serializer_class(self):
-        return PhotoSerializer if self.request.method == "POST" else PhotoListSerializer
-
-
-    def pre_save(self, obj):
+    def pre_save(self, obj) :
         """
         Asigna el autor de la foto antes de ser creada
         """
         obj.owner = self.request.user
 
 
-class PhotoDetailAPI(PhotoAPIQueryset, RetrieveUpdateDestroyAPIView):
-    """
-    API con endpoints de detalle, actualización y borrado
-    """
-    queryset = Photo.objects.all()
-    serializer_class = PhotoSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly,)
 
+class UploadPhotoAPI(ListCreateAPIView):
 
-
-
+    queryset = PhotoFile.objects.all()
+    serializer_class = PhotoFileSerializer
+    permission_classes = (IsAuthenticated,)

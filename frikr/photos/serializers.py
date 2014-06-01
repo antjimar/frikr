@@ -2,7 +2,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
-from models import Photo
+from models import Photo, PhotoFile
 from django.db.models import Q
 
 
@@ -62,10 +62,7 @@ class PhotoListSerializer(PhotoSerializer):
 
 
 
+class PhotoFileSerializer(serializers.ModelSerializer):
 
-
-
-
-
-
-
+    class Meta:
+        model = PhotoFile

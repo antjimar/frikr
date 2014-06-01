@@ -91,4 +91,22 @@ REST_FRAMEWORK = {
     'PAGINATE_BY' : 3, # indica los elementos a mostrar por página
     'PAGINATE_BY_PARAM' : 'page_size', # permite definir al cliente el tamaño de paginación
     'MAX_PAGINATE_BY' : 6, # maxímo número de items por página permitidos
+    'DEFAULT_RENDERER_CLASSES' : (
+        'rest_framework.renderers.JSONRenderer',
+        #'rest_framework.renderers.XMLRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+        #'rest_framework.renderers.YAMLRenderer'
+    )
 }
+
+
+# Configuración de archivos media
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'tu.cuenta@gmail.com'
+EMAIL_HOST_PASSWORD = 'la.de.tu.cuenta'
+EMAIL_PORT = 587
