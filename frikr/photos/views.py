@@ -98,7 +98,7 @@ def new_photo(request):
     if request.POST: # lo mismo que hacer request.method == 'POST'
 
         photo_with_user = Photo(owner=request.user)
-        photo_form = PhotoForm(request.POST, instance=photo_with_user)
+        photo_form = PhotoForm(request.POST, files=request.FILES, instance=photo_with_user)
 
         if photo_form.is_valid():
             #new_photo = Photo()

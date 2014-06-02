@@ -19,7 +19,7 @@ class Photo(models.Model):
 
     owner = models.ForeignKey(User) # relacionamos la foto con un usuario
     name = models.CharField(max_length=150)
-    url = models.URLField()
+    url = models.FileField(upload_to="uploads")
     description = models.TextField(blank=True) # permite estar vacío
     created_at = models.DateTimeField(auto_now_add=True) # cuando se crea, se pone a NOW()
     modified_at = models.DateTimeField(auto_now_add=True, auto_now=True) # cuando se crea o modifica, se pone a NOW()
