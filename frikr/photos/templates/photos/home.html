@@ -1,20 +1,15 @@
-{% load staticfiles %}
-<!DOCTYPE html>
-<html>
-<head lang="en">
-	<meta charset="UTF-8">
-	<title>Bienvenido a Frikr - Como Flickr pero en Friki</title>
-	<link href="{% static '/static/css/bootstrap.min.css' %}" rel="stylesheet">
-</head>
-<body>
-{% include 'photos/menu.html' %}
-<h1>Bienvenido a Frikr</h1>
-<p>Frikr es como Flickr, pero en friki</p>
+{% extends 'photos/base.html' %}
 
-{% if photo_list|length > 0 %}
-	<h2>Últimas fotos publicadas</h2>
-	{% include 'photos/photo_list.html' with photos=photo_list %}
-{% endif %}
+{% block head_title %} Bienvenido a Frikr - Como Flickr pero en Friki {% endblock %}
 
-</body>
-</html>
+{% block body_content %}
+
+	<h1>Bienvenido a Frikr</h1>
+	<p>Frikr es como Flickr, pero en friki</p>
+
+	{% if photo_list|length > 0 %}
+		<h2>Últimas fotos publicadas</h2>
+		{% include 'photos/photo_list.html' with photos=photo_list %}
+	{% endif %}
+
+{% endblock %}

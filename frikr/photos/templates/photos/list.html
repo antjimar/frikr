@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-	<meta charset="UTF-8">
-	<title>Fotos en Frikr</title>
-</head>
-<body>
-	{% include 'photos/menu.html' %}
+{% extends 'photos/base.html' %}
+
+{% block head_title %} Fotos en Frikr {% endblock %}
+
+{% block body_content %}
 	<h1>Fotos en Frikr</h1>
 	{% include 'photos/photo_list.html' with photos=object_list %}
-</body>
-</html>
+{% endblock %}
